@@ -16,7 +16,32 @@ const buttonFetch = (parameter) => {
     document.getElementById("run").addEventListener('click', () => {fetchJoke(parameter)})
 }
 
-const rHK = () => {}
+const rHK = () => {
+    document.getElementById("rhk").addEventListener("click", () => {
+        fetchJoke();
+        let run = document.getElementById("run");
+        run.remove();
+    });
+}
+
+const searchFunction = () => {
+    let resultsSection = document.getElementById("search-results");
+    let input = document.getElementById("search");
+    input.addEventListener("keypress", function (e){
+        if (e.key === 'Enter') {
+            fetch(`https://api.chucknorris.io/jokes/search?query=${input.value}`)
+                .then(response => response.json())
+                .then(data => {
+                    let resultsArr = data.result;
+                    resultsArr.forEach(result => {
+                        let results = document.createElement('p');
+                        results.innerText = result.value;
+                        resultsSection.appendChild(results);
+                    })
+                })
+        }
+    })
+}
 
 const buttonsLogic = (button) => {
     switch (button) {
@@ -91,15 +116,20 @@ const buttonsLogic = (button) => {
 
 const pageLoad = () => {
     let nav = document.getElementById("nav")
+    let jokeContainer = document.getElementById("child-container")
     fetch('https://api.chucknorris.io/jokes/categories')
         .then(response => response.json())
         .then(data => {
             data.forEach(category => {
-                let button = document.createElement('button');
+                let button = document.createElement("button");
                 button.setAttribute("id", category);
                 button.setAttribute("class", "btn");
                 button.innerText = category;
-                button.addEventListener('click', function() {
+                button.addEventListener("click", function() {
+                    let run = document.createElement("button")
+                    run.setAttribute("id", "run")
+                    run.innerText = "Viva Chuck";
+                    jokeContainer.appendChild(run);
                     buttonsLogic(this.id);
                 })
                 nav.appendChild(button);
@@ -109,7 +139,11 @@ const pageLoad = () => {
 }
 pageLoad();
 
-document.getElementById("rhk").addEventListener('click', () => {fetchJoke()});
+searchFunction();
+
+rHK();
+
+
 
 
 
