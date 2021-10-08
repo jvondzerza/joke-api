@@ -1,36 +1,120 @@
-(function () {
+const fetchJoke  = async (parameter) => {
+    let urlExtension;
+    if (parameter === undefined) {
+        urlExtension = "random";
+    } else {
+        urlExtension = `random?category=${parameter}`;
+    }
+    fetch(`https://api.chucknorris.io/jokes/${urlExtension}`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("joke").innerText = data.value;
+        })
+}
 
-    let gallery = [
-        'https://i.imgur.com/iqYgWOR.jpg',
-        'https://pbs.twimg.com/profile_images/465070908491583488/wuYikoDn.jpeg',
-        'https://i.pinimg.com/originals/9a/ba/1b/9aba1bb712df8a7bbe91fc132e07a193.jpg',
-        'https://i.pinimg.com/originals/be/ee/80/beee80fdfcebc16c5e86c34131d05943.jpg',
-        'https://www.beano.com/wp-content/uploads/legacy/73843_9988150dcff1640aebeafa0e9565fccc065f3d84fb3b0e098dacbfd4236c.jpg'
-        ]
+const buttonFetch = (parameter) => {
+    document.getElementById("run").addEventListener('click', fetchJoke(parameter))
+}
 
-    let counter = 1;
+const pageLoad = async () => {
+    let nav = document.getElementById("nav")
+    fetch('https://api.chucknorris.io/jokes/categories')
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(category => {
+                let button = document.createElement('button');
+                button.setAttribute("id", category);
+                button.setAttribute("class", "btn");
+                button.innerText = category;
+                nav.appendChild(button);
+                let allButtons = document.querySelectorAll(".btn");
+                allButtons.forEach(function(button) {
+                    button.addEventListener('click', function() {
+                        buttonsLogic(this.id);
+                    })
+                })
 
-    document.getElementById("run").addEventListener("click",  async () => {
-        let result = await fetch('https://v2.jokeapi.dev/joke/Any?type=single');
-        let joke = await result.json();
-        document.getElementById("run").innerText = "More lolz!";
-        document.getElementById("joke").innerText = joke.joke;
-        if (joke.category === "Dark") {
-            document.getElementById("category").innerText = "WARNING: May offend!";
-        } else {
-            document.getElementById("category").innerText = `Category: ${joke.category}`;
-        }
-        document.getElementById("id").innerText = `ID: ${joke.id}`;
+                const buttonsLogic = (button) => {
+                    switch (button) {
+                        case "animal":
+                            fetchJoke("animal");
+                            buttonFetch("animal");
+                            break;
+                        case "career":
+                            fetchJoke("career");
+                            buttonFetch("career");
+                            break;
+                        case "celebrity":
+                            fetchJoke("celebrity");
+                            buttonFetch("celebrity");
+                            break;
+                        case "dev":
+                            fetchJoke("dev");
+                            buttonFetch("dev");
+                            break;
+                        case "explicit":
+                            fetchJoke("explicit");
+                            buttonFetch("explicit");
+                            break;
+                        case "fashion":
+                            fetchJoke("fashion");
+                            buttonFetch("fashion");
+                            break;
+                        case "food":
+                            fetchJoke("food");
+                            buttonFetch("food");
+                            break;
+                        case "history":
+                            fetchJoke("history");
+                            buttonFetch("history");
+                            break;
+                        case "money":
+                            fetchJoke("money");
+                            buttonFetch("money");
+                            break;
+                        case "movie":
+                            fetchJoke("movie");
+                            buttonFetch("movie");
+                            break;
+                        case "music":
+                            fetchJoke("music");
+                            buttonFetch("music");
+                            break;
+                        case "political":
+                            fetchJoke("political");
+                            buttonFetch("political");
+                            break;
+                        case "religion":
+                            fetchJoke("religion");
+                            buttonFetch("religion");
+                            break;
+                        case "science":
+                            fetchJoke("science");
+                            buttonFetch("science");
+                            break;
+                        case "sport":
+                            fetchJoke("sport");
+                            buttonFetch("sport");
+                            break;
+                        case "travel":
+                            fetchJoke("travel");
+                            buttonFetch("travel");
+                            break;
+                        default:
+                            console.error(button + " is pressed")
+                    }
+                }
+            })
+        })
+    await fetchJoke();
+}
+pageLoad();
 
 
-        let image = document.getElementsByTagName('img')[0];
-        image.src = gallery[counter];
-        counter++;
-        if(counter === gallery.length){
-            counter = 0;
-        }
 
 
 
-    })
-}());
+
+
+
+

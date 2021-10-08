@@ -1,11 +1,12 @@
 (function () {
-let allButtons = document.getElementsByClassName("btn")
+    let allButtons = document.querySelectorAll(".btn")
     allButtons.forEach(function(button) {
         button.addEventListener('click', function() {
             buttonsLogic(this.id);
         })
     })
-console.log(allButtons);
+    console.log(allButtons);
+
     const getJoke = async (jokeType) => {
         let result = await fetch(`https://v2.jokeapi.dev/joke/${jokeType}?type=single`);
         let joke = await result.json();
